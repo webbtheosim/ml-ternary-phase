@@ -40,7 +40,7 @@ with open(filename, "rb") as handle:
 ```
 - **x**: Input $\mathbf{x}=(\chi_\mathrm{AB}, \chi_\mathrm{BC}, \chi_\mathrm{AC}, v_\mathrm{A}, v_\mathrm{B}, v_\mathrm{C})\in \mathbb{R}^8$.
 - **y_c**: Output one-hot encoded classification vector $\mathbf{y}_\mathrm{c}\in \mathbb{R}^3$.
-- **y_r**: Output equilibrium compsition and abundance vector $\mathbf{y}_\mathrm{r}=(\phi_\mathrm{A}^{\alpha}, \phi_\mathrm{B}^{\alpha}, \phi_\mathrm{A}^{\beta}, \phi_\mathrm{B}^{\beta}, \phi_\mathrm{A}^{\gamma}, \phi_\mathrm{B}^{\gamma}, w^{\alpha}, w^{\beta}, w^{\gamma}) \in \mathbb{R}^9$.
+- **y_r**: Output equilibrium composition and abundance vector y<sub>r</sub> = (&phi;<sub>A</sub><sup>&alpha;</sup>, &phi;<sub>B</sub><sup>&alpha;</sup>, &phi;<sub>A</sub><sup>&beta;</sup>, &phi;<sub>B</sub><sup>&beta;</sup>, &phi;<sub>A</sub><sup>&gamma;</sup>, &phi;<sub>B</sub><sup>&gamma;</sup>, w<sup>&alpha;</sup>, w<sup>&beta;</sup>, w<sup>&gamma;</sup>) &isin; ℝ<sup>9</sup>.
 - **phase_idx**: A single integer indicating which unique phase system it belongs to.
 - **num_phase**: A single integer indicates the number of equilibrium phases the input splits into.
 - **max_phase**: A single integer indicates the maximum number of equilibrium phases the system splits into.
