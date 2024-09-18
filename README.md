@@ -38,8 +38,8 @@ filename = os.path.join(DATA_DIR, f"data_clean.pickle")
 with open(filename, "rb") as handle:
     (x, y_c, y_r, phase_idx, num_phase, max_phase) = pickle.load(handle)
 ```
-- **x**: Input $\mathbf{x}=(\chi_\mathrm{AB}, \chi_\mathrm{BC}, \chi_\mathrm{AC}, v_\mathrm{A}, v_\mathrm{B}, v_\mathrm{C})\in \mathbb{R}^8$.
-- **y_c**: Output one-hot encoded classification vector $\mathbf{y}_\mathrm{c}\in \mathbb{R}^3$.
+- **x**: Input <b>x</b> = (&chi;<sub>AB</sub>, &chi;<sub>BC</sub>, &chi;<sub>AC</sub>, v<sub>A</sub>, v<sub>B</sub>, v<sub>C</sub>) &isin; ℝ<sup>8</sup>.
+- **y_c**: Output one-hot encoded classification vector <b>y</b><sub>c</sub> &isin; ℝ<sup>3</sup>.
 - **y_r**: Output equilibrium composition and abundance vector y<sub>r</sub> = (&phi;<sub>A</sub><sup>&alpha;</sup>, &phi;<sub>B</sub><sup>&alpha;</sup>, &phi;<sub>A</sub><sup>&beta;</sup>, &phi;<sub>B</sub><sup>&beta;</sup>, &phi;<sub>A</sub><sup>&gamma;</sup>, &phi;<sub>B</sub><sup>&gamma;</sup>, w<sup>&alpha;</sup>, w<sup>&beta;</sup>, w<sup>&gamma;</sup>) &isin; ℝ<sup>9</sup>.
 - **phase_idx**: A single integer indicating which unique phase system it belongs to.
 - **num_phase**: A single integer indicates the number of equilibrium phases the input splits into.
