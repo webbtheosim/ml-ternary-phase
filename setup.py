@@ -20,5 +20,6 @@ setup(
         "torch==1.13.1",
         "proplot==0.9.7",
         "scikit-learn==1.2.2",
+        "autograd==1.6.2",
     ],
 )

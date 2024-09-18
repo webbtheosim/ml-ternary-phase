@@ -9,12 +9,13 @@ from autograd import grad, hessian
 from scipy.optimize import minimize
 from tqdm import tqdm
 
-from mlphase.analysis.post_old import min_2phase, min_3phase, stability_condition
 from mlphase.plot import (
     gen_ternary_boundary_post,
     gen_ternary_boundary_ml,
     gen_ternary_scatter,
 )
+
+from mlphase.analysis.opt import min_2phase, min_3phase, stability_condition
 
 # Initialize color cycles for plotting
 COLORS = []
@@ -28,7 +29,12 @@ for color in colors:
 # Directories for saving plots and optimization results
 PLOT_DIR = "/scratch/gpfs/sj0161/mlphase/fig_ternary/"
 OPT_RESULT_DIR = "/scratch/gpfs/sj0161/mlphase/opt_pickle/"
-DATA_DIR="/scratch/gpfs/sj0161/mlphase/data/"
+DATA_DIR = "/scratch/gpfs/sj0161/mlphase/data/"
+
+# 0, 1, 2 are phi_a^alpha, phi_b^alpha, phi_c^alpha (c depends on a and b, not considered)
+# 3, 4, 5 are phi_a^beta, phi_b^beta, phi_c^beta
+# 6, 7, 8 are phi_a^gamma, phi_b^gamma, phi_c^gamma
+# 9, 10, 11 are w^alpha, w^beta, w^gamma
 
 
 def generate_plots(
