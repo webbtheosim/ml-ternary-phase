@@ -1,0 +1,10 @@
+To generate hulls, you need to run the `compute.py` program.
+
+Run the following command to generate hulls for chi=2.4, v=1
+
+`python compute.py -vs 1 -vc 1 -vp 1 --chips 2.4 --chipc 2.4 --chisc 2.4 --hull hull.pkl --img hull.png`
+
+Now that the hull has been serialized in `hull.pkl`, create the database using `make.py`.
+
+Run the following command:
+`python make.py --hull hull.pkl --deposit db`
