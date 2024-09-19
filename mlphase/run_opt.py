@@ -26,15 +26,17 @@ colors = pplt.Cycle("default")
 for color in colors:
     COLORS.append(color["color"])
 
-# Directories for saving plots and optimization results
-PLOT_DIR = "/scratch/gpfs/sj0161/mlphase/fig_ternary/"
-OPT_RESULT_DIR = "/scratch/gpfs/sj0161/mlphase/opt_pickle/"
-DATA_DIR = "/scratch/gpfs/sj0161/mlphase/data/"
-
 # 0, 1, 2 are phi_a^alpha, phi_b^alpha, phi_c^alpha (c depends on a and b, not considered)
 # 3, 4, 5 are phi_a^beta, phi_b^beta, phi_c^beta
 # 6, 7, 8 are phi_a^gamma, phi_b^gamma, phi_c^gamma
 # 9, 10, 11 are w^alpha, w^beta, w^gamma
+
+
+class Args:
+    def __init__(self):
+        self.PLOT_DIR = "/scratch/gpfs/sj0161/mlphase/fig_ternary/"
+        self.OPT_RESULT_DIR = "/scratch/gpfs/sj0161/mlphase/opt_pickle/"
+        self.DATA_DIR = "/scratch/gpfs/sj0161/mlphase/data/"
 
 
 def generate_plots(
@@ -105,6 +107,7 @@ def generate_plots(
 
 
 def main(
+    args,
     pickle_file,
     opt_result_dir,
     index=207,
@@ -362,7 +365,7 @@ def main(
             yc_pred=yc_pred,
             valid_idx=valid_idx,
             valid_idx_3=valid_idx_3,
-            PLOT_DIR=PLOT_DIR,
+            PLOT_DIR=args.PLOT_DIR,
             COLORS=COLORS,
             three_phase=three_phase,
         )
@@ -402,9 +405,11 @@ if __name__ == "__main__":
     for comb in combs:
         index, pickle_file = comb
         print(index, pickle_file)
+        args = Args()
         main(
+            args=args,
             pickle_file=pickle_file,
-            opt_result_dir=OPT_RESULT_DIR,
+            opt_result_dir=args.OPT_RESULT_DIR,
             index=index,
             plot_fig=False,
             rerun=True,

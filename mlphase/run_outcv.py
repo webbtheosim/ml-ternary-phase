@@ -10,7 +10,6 @@
 import os
 import glob
 import pickle
-import random
 import itertools
 from timeit import default_timer as timer
 from sklearn import metrics
@@ -33,19 +32,6 @@ from mlphase.model import (
     fill_prob_tensor,
 )
 
-DEVICE = (
-    "cuda"
-    if torch.cuda.is_available()
-    else "mps" if torch.backends.mps.is_available() else "cpu"
-)
-
-print(f"# DEVICE: {DEVICE}")
-
-# Define paths for data, models, and pickle files
-DATA_DIR = "/scratch/gpfs/sj0161/mlphase/data/"
-MODEL_PATH = "/scratch/gpfs/sj0161/mlphase/model/"
-PICKLE_INNER_PATH = "/scratch/gpfs/sj0161/mlphase/pickle_inner/"
-PICKLE_PATH = "/scratch/gpfs/sj0161/mlphase/pickle/"
 
 class Args:
     def __init__(self):
@@ -59,9 +45,18 @@ class Args:
         self.dim = 256
         self.loss = "softbase"
         self.verbose = 1
+        self.DATA_DIR = "/scratch/gpfs/sj0161/mlphase/data/"
+        self.MODEL_PATH = "/scratch/gpfs/sj0161/mlphase/model/"
+        self.PICKLE_INNER_PATH = "/scratch/gpfs/sj0161/mlphase/pickle_inner/"
+        self.PICKLE_PATH = "/scratch/gpfs/sj0161/mlphase/pickle/"
+        self.DEVICE = (
+            "cuda"
+            if torch.cuda.is_available()
+            else "mps" if torch.backends.mps.is_available() else "cpu"
+        )
 
 def main(args):
-    if os.path.exists(PICKLE_INNER_PATH):
+    if os.path.exists(args.PICKLE_INNER_PATH):
         batchsize = "*"
         epoch = "*"
         learningrate = "*"
@@ -74,7 +69,7 @@ def main(args):
         # Loop through sub-folds to gather results
         for sub_fold in range(1, 6):
             hyper_name = f"MLPHASE-{args.fold}-{sub_fold}-{batchsize}-{epoch}-{learningrate}-{args.mask}-{sample_ratio}-{dim}-{args.loss}"
-            pickle_file = os.path.join(PICKLE_INNER_PATH, hyper_name + ".pickle")
+            pickle_file = os.path.join(args.PICKLE_INNER_PATH, hyper_name + ".pickle")
             files = sorted(glob.glob(pickle_file))
 
             f1_vals = np.zeros(len(files))
@@ -115,8 +110,8 @@ def main(args):
     args.hyper_name = hyper_name
     args.random_seed = 2024
 
-    model_file = os.path.join(MODEL_PATH, f"{hyper_name}.pt")
-    pickle_file = os.path.join(PICKLE_PATH, hyper_name + ".pickle")
+    model_file = os.path.join(args.MODEL_PATH, f"{hyper_name}.pt")
+    pickle_file = os.path.join(args.PICKLE_PATH, hyper_name + ".pickle")
 
     print(f"# {hyper_name} started")
 
@@ -130,7 +125,7 @@ def main(args):
             n_folds=5,
             sample_ratio=args.sample_ratio,
             random_seed=args.random_seed,
-            DATA_DIR=DATA_DIR,
+            DATA_DIR=args.DATA_DIR,
         )
 
         (
@@ -164,9 +159,13 @@ def main(args):
 
         # Initialize the model based on the loss type
         if "soft" in args.loss:
-            model = ChainSoftmax(DEVICE, mask=args.mask, dim=args.dim).to(DEVICE)
+            model = ChainSoftmax(args.DEVICE, mask=args.mask, dim=args.dim).to(
+                args.DEVICE
+            )
         else:
-            model = ChainLinear(DEVICE, mask=args.mask, dim=args.dim).to(DEVICE)
+            model = ChainLinear(args.DEVICE, mask=args.mask, dim=args.dim).to(
+                args.DEVICE
+            )
 
         cls_criterion = nn.CrossEntropyLoss()
 
@@ -199,7 +198,7 @@ def main(args):
                 cls_criterion,
                 reg_criterion,
                 reg_criterion_size,
-                DEVICE,
+                args.DEVICE,
             )
             cls_val_loss, reg_val_loss = test_cls_reg(
                 model,
@@ -207,7 +206,7 @@ def main(args):
                 cls_criterion,
                 reg_criterion,
                 reg_criterion_size,
-                DEVICE,
+                args.DEVICE,
             )
 
             cls_train_losses.append(cls_train_loss)
@@ -229,7 +228,7 @@ def main(args):
             early_stopping(
                 torch.sum(cls_val_losses[-1]) + torch.sum(reg_val_losses[-1]),
                 model=model,
-                path=MODEL_PATH,
+                path=args.MODEL_PATH,
                 name=hyper_name,
                 epoch=epoch,
             )
@@ -247,7 +246,12 @@ def main(args):
         model.load_state_dict(torch.load(model_file, map_location=torch.device("cpu")))
 
         cls_val_loss, reg_val_loss = test_cls_reg(
-            model, val_loader, cls_criterion, reg_criterion, reg_criterion_size, DEVICE
+            model,
+            val_loader,
+            cls_criterion,
+            reg_criterion,
+            reg_criterion_size,
+            args.DEVICE,
         )
         print(f"# Val loss: {torch.sum(cls_val_loss) + torch.sum(reg_val_loss):.4f}")
 
@@ -256,7 +260,12 @@ def main(args):
         yr_pred_val = yr_pred_val.detach().cpu().numpy()
 
         cls_test_loss, reg_test_loss = test_cls_reg(
-            model, test_loader, cls_criterion, reg_criterion, reg_criterion_size, DEVICE
+            model,
+            test_loader,
+            cls_criterion,
+            reg_criterion,
+            reg_criterion_size,
+            args.DEVICE,
         )
         print(f"# Test loss: {torch.sum(cls_test_loss) + torch.sum(reg_test_loss):.4f}")
 

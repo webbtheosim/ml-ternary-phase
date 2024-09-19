@@ -32,19 +32,6 @@ from mlphase.model import (
     fill_prob_tensor,
 )
 
-DEVICE = (
-    "cuda"
-    if torch.cuda.is_available()
-    else "mps" if torch.backends.mps.is_available() else "cpu"
-)
-
-print(f"# DEVICE: {DEVICE}")
-
-# Define directories for data, models, and pickle files
-DATA_DIR = "/scratch/gpfs/sj0161/mlphase/data/"
-MODEL_PATH = "/scratch/gpfs/sj0161/mlphase/model_inner/"
-PICKLE_INNER_PATH = "/scratch/gpfs/sj0161/mlphase/pickle_inner/"
-
 class Args:
     def __init__(self):
         self.fold = 1
@@ -57,6 +44,14 @@ class Args:
         self.dim = 256
         self.loss = "softbase"
         self.verbose = 1
+        self.DATA_DIR = "/scratch/gpfs/sj0161/mlphase/data/"
+        self.MODEL_PATH = "/scratch/gpfs/sj0161/mlphase/model_inner/"
+        self.PICKLE_INNER_PATH = "/scratch/gpfs/sj0161/mlphase/pickle_inner/"
+        self.DEVICE = (
+            "cuda"
+            if torch.cuda.is_available()
+            else "mps" if torch.backends.mps.is_available() else "cpu"
+        )
 
 def main(args):
     # Create a unique name for the hyperparameter combination
@@ -64,8 +59,8 @@ def main(args):
     args.hyper_name = hyper_name
 
     # Define file paths for model and pickle files
-    model_file = os.path.join(MODEL_PATH, f"{hyper_name}.pt")
-    pickle_file = os.path.join(PICKLE_INNER_PATH, hyper_name + ".pickle")
+    model_file = os.path.join(args.MODEL_PATH, f"{hyper_name}.pt")
+    pickle_file = os.path.join(args.PICKLE_INNER_PATH, hyper_name + ".pickle")
 
     print(f"# {hyper_name} started")
 
@@ -81,7 +76,7 @@ def main(args):
             n_folds=5,
             sample_ratio=args.sample_ratio,
             random_seed=args.random_seed,
-            DATA_DIR=DATA_DIR,
+            DATA_DIR=args.DATA_DIR,
         )
 
         (
@@ -115,9 +110,13 @@ def main(args):
 
         # Initialize the model based on the loss type
         if "soft" in args.loss:
-            model = ChainSoftmax(DEVICE, mask=args.mask, dim=args.dim).to(DEVICE)
+            model = ChainSoftmax(args.DEVICE, mask=args.mask, dim=args.dim).to(
+                args.DEVICE
+            )
         else:
-            model = ChainLinear(DEVICE, mask=args.mask, dim=args.dim).to(DEVICE)
+            model = ChainLinear(args.DEVICE, mask=args.mask, dim=args.dim).to(
+                args.DEVICE
+            )
 
         # Define classification criterion
         cls_criterion = nn.CrossEntropyLoss()
@@ -150,7 +149,7 @@ def main(args):
                 cls_criterion,
                 reg_criterion,
                 reg_criterion_size,
-                DEVICE,
+                args.DEVICE,
             )
             cls_val_loss, reg_val_loss = test_cls_reg(
                 model,
@@ -158,7 +157,7 @@ def main(args):
                 cls_criterion,
                 reg_criterion,
                 reg_criterion_size,
-                DEVICE,
+                args.DEVICE,
             )
 
             cls_train_losses.append(cls_train_loss)
@@ -176,7 +175,7 @@ def main(args):
             early_stopping(
                 torch.sum(cls_val_loss) + torch.sum(reg_val_loss),
                 model=model,
-                path=MODEL_PATH,
+                path=args.MODEL_PATH,
                 name=hyper_name,
                 epoch=epoch,
             )

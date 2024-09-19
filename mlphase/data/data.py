@@ -20,7 +20,7 @@ class CustomDataset(Dataset):
 
 
 def load_data(file):
-    file_clean = file.replace("data", "data_clean")
+    file_clean = file.replace("data.pickle", "data_clean.pickle")
 
     if os.path.exists(file_clean):
         with open(file_clean, "rb") as handle:
