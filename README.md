@@ -1,4 +1,4 @@
-# Accelerating Multicomponent Phase-Coexistence Calculations with Machine Learning
+# Accelerating Multicomponent Phase-Coexistence Calculations with Physics-informed Neural Networks
 
 <br />
 <img src="./website/overview.png" />
