@@ -21,17 +21,8 @@ $ pip install -e .
 Select a disk location for data storage and update the directory paths before running the program. Download the required data from Zenodo [here](https://doi.org/10.5281/zenodo.13776946).
 - **DATA_DIR**: Stores data pickle files (approx. 400 MB).
 
-To train from scratch, only the **DATA_DIR** is required.
-
-Optional training results can be downloaded here.
-- **TRAIN_RESULT_DIR**: Stores training results in pickle format (approx. 5GB) [Download](https://drive.google.com/drive/folders/1iqdNqNbAL3BVvuPYAEXuBHnIzhpdZBXY?usp=sharing). These pickle files can be used to reproduce the post-ML optimization results.
-- **RESULT_DIR**: Stores results in pickle format for analysis and plotting (approx. 229 MB) [Download](https://drive.google.com/drive/folders/1Xb4_S81d7RkLqKOcsfptHBg7N1MeAw3c?usp=sharing). These are temporary files. In the notebook, if `reload=False`, the plots will be generated using these files.
-- **OPT_RESULT_DIR**: Stores post-ML Newton-CG optimization results in pickle format (approx. 78 MB) [Download](https://drive.google.com/drive/folders/1NEoXrO5KQGeRFkotUxCbeOyI931yl8Nv?usp=drive_link). Each file represents the optimization of a single phase system, identified by a unique index.
-- **PICKLE_INNER_PATH**: Stores training results of hyperparameter tuning (approx. 16 MB) [Download](https://drive.google.com/drive/folders/15_BgWrhvIAhgwVHCXKdrBS_PlexB9x-z?usp=sharing). These small files contain hyperparameter tuning results. If you want to start with only the outer loop of cross-validation, you can directly use these files and run `run_outercv.py`. If you'd prefer to perform hyperparameter tuning yourself, run `run_innercv.py`.
-
-
 ```python
-# LOAD SIMULATION DATA
+# LOAD DATA
 DATA_DIR = "your/custom/dir/"
 
 filename = os.path.join(DATA_DIR, f"data_clean.pickle")
@@ -44,6 +35,15 @@ with open(filename, "rb") as handle:
 - **phase_idx**: A single integer indicating which unique phase system it belongs to.
 - **num_phase**: A single integer indicates the number of equilibrium phases the input splits into.
 - **max_phase**: A single integer indicates the maximum number of equilibrium phases the system splits into.
+
+To train from scratch, only the **DATA_DIR** is required.
+
+Optional training results can be downloaded here.
+- **TRAIN_RESULT_DIR**: Stores training results in pickle format (approx. 5GB). These pickle files can be used to reproduce the post-ML optimization results. [Download](https://drive.google.com/drive/folders/1iqdNqNbAL3BVvuPYAEXuBHnIzhpdZBXY?usp=sharing)
+- **RESULT_DIR**: Stores results in pickle format for analysis and plotting (approx. 229 MB). These are temporary files. In the notebook, if `reload=False`, the plots will be generated using these files. [Download](https://drive.google.com/drive/folders/1Xb4_S81d7RkLqKOcsfptHBg7N1MeAw3c?usp=sharing)
+- **OPT_RESULT_DIR**: Stores post-ML Newton-CG optimization results in pickle format (approx. 78 MB) . Each file represents the optimization of a single phase system, identified by a unique index. [Download](https://drive.google.com/drive/folders/1NEoXrO5KQGeRFkotUxCbeOyI931yl8Nv?usp=drive_link)
+- **PICKLE_INNER_PATH**: Stores training results of hyperparameter tuning (approx. 16 MB). These small files contain hyperparameter tuning results. If you want to start with only the outer loop of cross-validation, you can directly use these files and run `run_outercv.py`. If you'd prefer to perform hyperparameter tuning yourself, run `run_innercv.py`. [Download](https://drive.google.com/drive/folders/15_BgWrhvIAhgwVHCXKdrBS_PlexB9x-z?usp=sharing)
+
 
 ## File Structure
 
