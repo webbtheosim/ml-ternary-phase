@@ -1,7 +1,7 @@
 # Accelerating Multicomponent Phase-Coexistence Calculations with Physics-informed Neural Networks
 
 <br />
-<img src="./website/overview.png" />
+<img src="./website/overview_v3.png" />
 <br />
 
 ## Install Instructions
