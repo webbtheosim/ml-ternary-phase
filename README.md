@@ -24,10 +24,10 @@ Select a disk location for data storage and update the directory paths before ru
 To train from scratch, only the **DATA_DIR** is required.
 
 Optional training results can be downloaded here.
-- **TRAIN_RESULT_DIR**: Stores training results in pickle format (approx. 6 GB) [Download](https://drive.google.com/drive/folders/17BYQ8qg0QZw4AITk0ektZcCoZji-PoZe?usp=drive_link).
-- **RESULT_DIR**: Stores results in pickle format for analysis and plotting (approx. 229 MB) [Download](https://drive.google.com/drive/folders/1Xb4_S81d7RkLqKOcsfptHBg7N1MeAw3c?usp=sharing).
-- **OPT_RESULT_DIR**: Stores post-ML Newton-CG optimization results in pickle format (approx. 78 MB) [Download](https://drive.google.com/drive/folders/1NEoXrO5KQGeRFkotUxCbeOyI931yl8Nv?usp=drive_link)
-- **PICKLE_INNER_PATH**: Stores training results of hyperparameter tuning (approx. 16 MB) [Download](https://drive.google.com/drive/folders/15_BgWrhvIAhgwVHCXKdrBS_PlexB9x-z?usp=sharing)
+- **TRAIN_RESULT_DIR**: Stores training results in pickle format (approx. 5GB) [Download](https://drive.google.com/drive/folders/1iqdNqNbAL3BVvuPYAEXuBHnIzhpdZBXY?usp=sharing). These pickle files can be used to reproduce the post-ML optimization results.
+- **RESULT_DIR**: Stores results in pickle format for analysis and plotting (approx. 229 MB) [Download](https://drive.google.com/drive/folders/1Xb4_S81d7RkLqKOcsfptHBg7N1MeAw3c?usp=sharing). These are temporary files. In the notebook, if `reload=False`, the plots will be generated using these files.
+- **OPT_RESULT_DIR**: Stores post-ML Newton-CG optimization results in pickle format (approx. 78 MB) [Download](https://drive.google.com/drive/folders/1NEoXrO5KQGeRFkotUxCbeOyI931yl8Nv?usp=drive_link). Each file represents the optimization of a single phase system, identified by a unique index.
+- **PICKLE_INNER_PATH**: Stores training results of hyperparameter tuning (approx. 16 MB) [Download](https://drive.google.com/drive/folders/15_BgWrhvIAhgwVHCXKdrBS_PlexB9x-z?usp=sharing). These small files contain hyperparameter tuning results. If you want to start with only the outer loop of cross-validation, you can directly use these files and run `run_outercv.py`. If you'd prefer to perform hyperparameter tuning yourself, run `run_innercv.py`.
 
 
 ```python
