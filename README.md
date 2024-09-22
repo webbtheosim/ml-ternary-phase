@@ -21,8 +21,9 @@ $ pip install -e .
 Select a disk location for data storage and update the directory paths before running the program. Download the required data from Zenodo [here](https://doi.org/10.5281/zenodo.13776946).
 - **DATA_DIR**: Stores data pickle files (approx. 400 MB).
 
-Additional training results can be downloaded [here](https://drive.google.com/drive/folders/1BjnHbVxUHIj7Gj4wliY5N8mMjR9abFwi?usp=sharing).
+Additional training results and weights can be downloaded [here](https://drive.google.com/drive/folders/1BjnHbVxUHIj7Gj4wliY5N8mMjR9abFwi?usp=sharing).
 - **TRAIN_RESULT_DIR**: Stores training results in pickle format (approx. 5 GB).
+- **MODEL_DIR**: Stores training weights in .h5 format (approx. 14 MB).
 - **RESULT_DIR**: Stores results in pickle format for analysis and plotting (approx. 229 GB).
 - **OPT_RESULT_DIR**: Stores post-ML Newton-CG optimization results in pickle format (approx. 78 MB)
 - **PICKLE_INNER_PATH**: Stores training results of hyperparameter tuning (approx. 16 MB)
