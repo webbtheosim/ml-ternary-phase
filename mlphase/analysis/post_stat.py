@@ -179,31 +179,6 @@ def load_opt_pickle(opt_file, ml_file, idx, THRESHOLD=np.inf):
     )
 
 
-def filter_by_distance(y_opt, threshold):
-    """
-    Filter optimization results based on distance for two-phase case.
-    """
-    a = y_opt[:, [0, 1]]
-    b = y_opt[:, [2, 3]]
-    distances = np.linalg.norm(a - b, axis=1)
-    return np.where(distances >= threshold)[0]
-
-
-def filter_by_distance_3_phase(y_opt, threshold):
-    """
-    Filter optimization results based on distance for three-phase case.
-    """
-    a = y_opt[:, [0, 1]]
-    b = y_opt[:, [2, 3]]
-    c = y_opt[:, [4, 5]]
-    dis_1 = np.linalg.norm(a - b, axis=1)
-    dis_2 = np.linalg.norm(b - c, axis=1)
-    dis_3 = np.linalg.norm(a - c, axis=1)
-    return np.where((dis_1 >= threshold) & (dis_2 >= threshold) & (dis_3 >= threshold))[
-        0
-    ]
-
-
 def filter_by_composition(y_opt):
     """
     Composition >= 0 and <= 1.

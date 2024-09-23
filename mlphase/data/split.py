@@ -87,15 +87,15 @@ def split_data(fold, sub_fold, n_folds=5, sample_ratio=0.1, random_seed=42, DATA
 
     t1 = timer()
     print(f"# Data loading in {t1-t0:0.4f} sec ...")
-    # print(f"# x train:   {x_train.shape}")
-    # print(f"# y_r train: {yr_train.shape}")
-    # print(f"# y_c train: {yc_train.shape}")
-    # print(f"# x val:     {x_val.shape}")
-    # print(f"# y_r val:   {yr_val.shape}")
-    # print(f"# y_c val:   {yc_val.shape}")
-    # print(f"# x test:    {x_test.shape}")
-    # print(f"# y_r test:  {yr_test.shape}")
-    # print(f"# y_c test:  {yc_test.shape}")
+    print(f"# x train:   {x_train.shape}")
+    print(f"# y_r train: {yr_train.shape}")
+    print(f"# y_c train: {yc_train.shape}")
+    print(f"# x val:     {x_val.shape}")
+    print(f"# y_r val:   {yr_val.shape}")
+    print(f"# y_c val:   {yc_val.shape}")
+    print(f"# x test:    {x_test.shape}")
+    print(f"# y_r test:  {yr_test.shape}")
+    print(f"# y_c test:  {yc_test.shape}")
 
     return (
         x_train,

@@ -3,7 +3,7 @@ import pickle
 import glob
 import numpy as np
 from tqdm import tqdm
-from sklearn.metrics import f1_score, r2_score, mean_absolute_error, mean_squared_error
+from sklearn.metrics import f1_score, r2_score, mean_absolute_error
 
 # Output vector indices
 # 0, 1, 2 are phi_a^alpha, phi_b^alpha, phi_c^alpha (c depends on a and b, not considered)
@@ -35,44 +35,48 @@ def load_metrics(
                     [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
                     total=12,
                 ):
-
-                    train_pkl = os.path.join(
-                        train_res_dir,
-                        f"MLPHASEOUTER-*-1-*-*-*-{mask}-{ratio}-*-{loss}.pickle",
-                    )
-
-                    files = sorted(glob.glob(train_pkl))
-                    r2_tests, f1_tests, mae_tests = [], [], []
-
-                    for file in files:
-                        with open(file, "rb") as handle:
-                            yc_test = pickle.load(handle)
-                            yc_pred = pickle.load(handle)
-                            yr_test = pickle.load(handle)
-                            yr_pred = pickle.load(handle)
-
-                        # 0, 1, 2 are phi_a^alpha, phi_b^alpha, phi_c^alpha (c depends on a and b, not considered)
-                        # 3, 4, 5 are phi_a^beta, phi_b^beta, phi_c^beta
-                        # 6, 7, 8 are phi_a^gamma, phi_b^gamma, phi_c^gamma
-                        # 9, 10, 11 are w^alpha, w^beta, w^gamma
-                        
-                        idx = [0, 1, 3, 4, 6, 7, 9, 10, 11]
-
-                        f1_test = f1_score(
-                            yc_test.argmax(axis=1),
-                            yc_pred.argmax(axis=1),
-                            average="micro",
-                        )
-                        r2_test = r2_score(
-                            yr_test[:, idx].ravel(), yr_pred[:, idx].ravel()
-                        )
-                        mae_test = mean_absolute_error(
-                            yr_test[:, idx].ravel(), yr_pred[:, idx].ravel()
+                    try:
+                        train_pkl = os.path.join(
+                            train_res_dir,
+                            f"MLPHASEOUTER-*-1-*-*-*-{mask}-{ratio}-*-{loss}.pickle",
                         )
 
-                        r2_tests.append(r2_test)
-                        f1_tests.append(f1_test)
-                        mae_tests.append(mae_test)
+                        files = sorted(glob.glob(train_pkl))
+                        r2_tests, f1_tests, mae_tests = [], [], []
+
+                        for file in files:
+                            with open(file, "rb") as handle:
+                                yc_test = pickle.load(handle)
+                                yc_pred = pickle.load(handle)
+                                yr_test = pickle.load(handle)
+                                yr_pred = pickle.load(handle)
+
+                            # 0, 1, 2 are phi_a^alpha, phi_b^alpha, phi_c^alpha (c depends on a and b, not considered)
+                            # 3, 4, 5 are phi_a^beta, phi_b^beta, phi_c^beta
+                            # 6, 7, 8 are phi_a^gamma, phi_b^gamma, phi_c^gamma
+                            # 9, 10, 11 are w^alpha, w^beta, w^gamma
+                            
+                            idx = [0, 1, 3, 4, 6, 7, 9, 10, 11]
+
+                            f1_test = f1_score(
+                                yc_test.argmax(axis=1),
+                                yc_pred.argmax(axis=1),
+                                average="micro",
+                            )
+                            r2_test = r2_score(
+                                yr_test[:, idx].ravel(), yr_pred[:, idx].ravel()
+                            )
+                            mae_test = mean_absolute_error(
+                                yr_test[:, idx].ravel(), yr_pred[:, idx].ravel()
+                            )
+
+                            r2_tests.append(r2_test)
+                            f1_tests.append(f1_test)
+                            mae_tests.append(mae_test)
+                            
+                    except Exception as e:
+                        print(f"Error: {e}")
+                        continue
 
                     r2_scores.append([np.mean(r2_tests), np.std(r2_tests)])
                     f1_scores.append([np.mean(f1_tests), np.std(f1_tests)])
